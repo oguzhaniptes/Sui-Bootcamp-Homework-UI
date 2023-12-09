@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import { useState } from "react";
+import riseInLogo from "/risein.svg";
+import "./App.css";
+// import { getFullnodeUrl, SuiClient } from "@mysten/sui.js/client";
+// import { ConnectButton } from "@mysten/wallet-kit";
+import { ConnectButton } from "@mysten/dapp-kit";
+import { Button } from "@radix-ui/themes";
+import { useNavigate } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  const navigate = useNavigate();
   return (
-    <>
+    <div>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+        <a href="https://www.risein.com" target="_blank">
+          <img src={riseInLogo} className="logo" alt="Vite logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      <h1>Sui Blockchain</h1>
+      <nav>
+        <ConnectButton></ConnectButton>
+      </nav>
+      <div style={{ marginTop: "1rem", display: "flex", justifyContent: "center" }}>
+        <Button radius="large" size="3" onClick={() => navigate("/integration")}>
+          Bootcamp Frontend Integration
+        </Button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <p className="read-the-docs">Click on the Rise logos to learn more</p>
+    </div>
+  );
 }
 
-export default App
+export default App;
