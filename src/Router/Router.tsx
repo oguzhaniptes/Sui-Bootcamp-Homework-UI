@@ -8,8 +8,6 @@ const Router: React.FC = () => {
     <>
       <BrowserRouter basename={"/"}>
         <Routes>
-          {/* <Route element={<ProtectedRoute />}></Route> */}
-
           <Route path="/" index element={<App />} />
           <Route path="/integration" index element={<DeveloperCard />} />
         </Routes>
