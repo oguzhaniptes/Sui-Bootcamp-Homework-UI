@@ -1,24 +1,24 @@
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 import { Button } from "@radix-ui/themes";
 import { useMoveCalls } from "../Sui/DevHubCaller";
-// import { useWalletKit } from "@mysten/wallet-kit";
 
 const DeveloperCard = () => {
   const currentAccount = useCurrentAccount();
-  console.log(currentAccount);
   const { handleCreateDeveloperCard } = useMoveCalls();
 
   return (
     <div>
-      <nav>
-        <ConnectButton></ConnectButton>
-      </nav>
+      <div style={{ display: "flex", flexDirection: "row", gap: "2rem" }}>
+        <h1>Create Developer Card</h1>
+        <nav style={{ display: "flex", alignItems: "center" }}>
+          <ConnectButton></ConnectButton>
+        </nav>
+      </div>
+      {currentAccount && <h4>Active network "{currentAccount?.chains[0].slice(4).toUpperCase()}"</h4>}
       <div style={{ marginTop: "2rem" }}>
-        {currentAccount && (
-          <Button size={"4"} onClick={handleCreateDeveloperCard}>
-            Create Developer Card
-          </Button>
-        )}
+        <Button size={"4"} onClick={() => handleCreateDeveloperCard(currentAccount!)} disabled={!currentAccount}>
+          Create
+        </Button>
       </div>
     </div>
   );
