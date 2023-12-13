@@ -3,28 +3,28 @@ import { useWalletKit } from "@mysten/wallet-kit";
 
 import { PACKAGE_OBJECT_ID, DEV_HUB } from "../Constant/Constant";
 import { WalletAccount } from "@wallet-standard/core";
-import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
-// import { useSuiClient } from "@mysten/dapp-kit";
+// import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
 import { SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
+// import { fromHEX } from "@mysten/sui.js/utils";
+import { useSignAndExecuteTransactionBlock } from "@mysten/dapp-kit";
 
 export const useMoveCalls = () => {
-  // const suiClient = useSuiClient();
-  const keypair = new Ed25519Keypair();
-  console.log(keypair.getPublicKey());
+  // const currentAccount = useCurrentAccount();
+  // console.log("current ac", currentAccount);
+
+  // const keypair = Ed25519Keypair.fromSecretKey(fromHEX("0x52595bf7b39ffe54afbd90764628b6ab38046b1f72bcd5c142a209b5eb420869"));
 
   const suiClient = new SuiClient({
-    url: getFullnodeUrl("devnet"),
+    url: getFullnodeUrl("testnet"),
   });
 
   const tx = new TransactionBlock(); // Create a transaction block
   const { signAndExecuteTransactionBlock } = useWalletKit();
-  // const { mutate: signAndExecute } = useSignAndExecuteTransactionBlock();
+  const { mutate: signAndExecute } = useSignAndExecuteTransactionBlock();
 
-  const handleCreateDeveloperCard = async () => {
+  const handleCreateDeveloperCard = async (wallet: WalletAccount) => {
     try {
-      const [coin] = tx.splitCoins(tx.gas, [1000000000]); // define payment coin
-      console.log("burayi atladik");
-      // Calls the create_card function from the devcard package
+      const [coin] = tx.splitCoins(tx.gas, [1]); // define payment coin
       tx.moveCall({
         target: `${PACKAGE_OBJECT_ID}::devcard::create_card`,
         arguments: [
@@ -39,38 +39,28 @@ export const useMoveCalls = () => {
         ],
       });
 
-      console.log("surati atladik");
+      // const result = await suiClient.signAndExecuteTransactionBlock({
+      //   transactionBlock: tx,
+      //   signer: keypair,
+      //   options: { showBalanceChanges: true, showEffects: true, showEvents: true, showInput: true, showObjectChanges: true, showRawInput: true },
+      // });
 
-      const result = await suiClient.signAndExecuteTransactionBlock({ transactionBlock: tx, signer: keypair });
-
-      console.log("otede kaldik");
-      console.log({ result });
-      // }
-
-      // signAndExecute(
-      //   {
-      //     transactionBlock: tx,
-      //     // account: wallet,
-      //     // options: {
-      //     //   showBalanceChanges: true,
-      //     //   showEffects: true,
-      //     //   showEvents: true,
-      //     //   showInput: true,
-      //     //   showObjectChanges: true,
-      //     //   showRawInput: true,
-      //     // },
-      //     // requestType: "WaitForLocalExecution",
-      //   },
-      //   {
-      //     onSuccess: (tx) => {
-      //       suiClient
-      //         .waitForTransactionBlock({
-      //           digest: tx.digest,
-      //         })
-      //         .then(() => {});
-      //     },
-      //   }
-      // );
+      const result = signAndExecute(
+        {
+          transactionBlock: tx,
+          account: wallet,
+        },
+        {
+          onSuccess: (tx) => {
+            suiClient
+              .waitForTransactionBlock({
+                digest: tx.digest,
+              })
+              .then(() => {});
+          },
+        }
+      );
+      console.log(result);
     } catch (error) {
       console.error(error);
     }
@@ -119,5 +109,43 @@ export const useMoveCalls = () => {
     }
   };
 
-  return { handleCreateDeveloperCard, updateCardDescriptionFunction, deactivateCard };
+  const getCardInfo = async (devhub: string, id: number = 0, wallet: WalletAccount) => {
+    try {
+      tx.moveCall({
+        target: `${PACKAGE_OBJECT_ID}::devcard::get_card_info`,
+        arguments: [tx.object(devhub), tx.pure.u64(id)],
+      });
+
+      // const result = await suiClient.signAndExecuteTransactionBlock({
+      //   transactionBlock: tx,
+      //   signer: keypair,
+      //   requestType: "WaitForLocalExecution",
+      //   // options: { showBalanceChanges: true, showEffects: true, showEvents: true, showInput: true, showObjectChanges: true, showRawInput: true },
+      // });
+      // console.log(result);
+
+      // const result = await suiClient.signAndExecuteTransactionBlock({ transactionBlock: tx, signer: keypair });
+
+      const result = signAndExecute(
+        {
+          transactionBlock: tx,
+          account: wallet,
+        },
+        {
+          onSuccess: (tx) => {
+            suiClient
+              .waitForTransactionBlock({
+                digest: tx.digest,
+              })
+              .then(() => {});
+          },
+        }
+      );
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return { handleCreateDeveloperCard, updateCardDescriptionFunction, deactivateCard, getCardInfo };
 };
