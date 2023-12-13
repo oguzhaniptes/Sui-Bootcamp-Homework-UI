@@ -11,6 +11,7 @@ import { SuiClientProvider, WalletProvider, createNetworkConfig } from "@mysten/
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Router from "./Router/Router.tsx";
 import { WalletKitProvider } from "@mysten/wallet-kit";
+import { NETWORK } from "./Constant/Constant.tsx";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Theme appearance="dark">
       <QueryClientProvider client={queryClient}>
-        <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
+        <SuiClientProvider networks={networkConfig} defaultNetwork={NETWORK}>
           <WalletProvider autoConnect>
             <WalletKitProvider>
               <Router />
