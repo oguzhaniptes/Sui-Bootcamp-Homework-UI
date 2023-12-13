@@ -1,14 +1,14 @@
-// import { useState } from "react";
 import riseInLogo from "/risein.svg";
 import "./App.css";
-// import { getFullnodeUrl, SuiClient } from "@mysten/sui.js/client";
-// import { ConnectButton } from "@mysten/wallet-kit";
-import { ConnectButton } from "@mysten/dapp-kit";
+import { ConnectButton, useCurrentAccount, useCurrentWallet } from "@mysten/dapp-kit";
 import { Button } from "@radix-ui/themes";
 import { useNavigate } from "react-router-dom";
 
 function App() {
   const navigate = useNavigate();
+  const wallet = useCurrentWallet();
+  const currentAccount = useCurrentAccount();
+
   return (
     <div>
       <div>
@@ -16,16 +16,25 @@ function App() {
           <img src={riseInLogo} className="logo" alt="Vite logo" />
         </a>
       </div>
-      <h1>Sui Blockchain</h1>
-      <nav>
-        <ConnectButton></ConnectButton>
-      </nav>
-      <div style={{ marginTop: "1rem", display: "flex", justifyContent: "center" }}>
-        <Button radius="large" size="3" onClick={() => navigate("/integration")}>
-          Bootcamp Frontend Integration
-        </Button>
+      <div style={{ display: "flex", flexDirection: "row", gap: "2rem" }}>
+        <h1>Sui Blockchain</h1>
+        <nav style={{ display: "flex", alignItems: "center" }}>
+          <ConnectButton></ConnectButton>
+        </nav>
       </div>
-      <p className="read-the-docs">Click on the Rise logos to learn more</p>
+      {wallet.isConnected && (
+        <>
+          <h4>Active network "{currentAccount?.chains[0].slice(4).toUpperCase()}"</h4>
+          <div style={{ marginTop: "1rem", display: "flex", justifyContent: "center" }}>
+            <Button radius="large" size="3" onClick={() => navigate("/integration")}>
+              Bootcamp Frontend Integration
+            </Button>
+          </div>
+        </>
+      )}
+      <p style={{ marginTop: "2rem" }} className="read-the-docs">
+        Click on the Rise logos to learn more
+      </p>
     </div>
   );
 }
