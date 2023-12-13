@@ -1,2 +1,2 @@
-export const PACKAGE_OBJECT_ID = "0xa84c4c283b1353fd28628a7beed4f3f5fc3a03f8ed4b36b87b8e992d1ac80ca4";
-export const DEV_HUB = "0xc1bb1786f1ce297d56b8d6d303fb21a99942f908dbbcaf593342035bf9c0cad7";
+export const PACKAGE_OBJECT_ID = "0xd8a8374a5b759f16865c48ac8567aa57bdfa8e5562d194fac21899c43bfada0a";
+export const DEV_HUB = "0x040cd594e4bc888e2b9040a579d7809f2dbf95c913fb441668ea1f8ad3f95856";
