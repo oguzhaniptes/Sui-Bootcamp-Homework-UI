@@ -4,7 +4,7 @@ import { useMoveCalls } from "../Sui/DevHubCaller";
 
 const DeveloperCard = () => {
   const currentAccount = useCurrentAccount();
-  const { handleCreateDeveloperCard } = useMoveCalls();
+  const { createDeveloperCard } = useMoveCalls();
 
   return (
     <div>
@@ -16,7 +16,7 @@ const DeveloperCard = () => {
       </div>
       {currentAccount && <h4>Active network "{currentAccount?.chains[0].slice(4).toUpperCase()}"</h4>}
       <div style={{ marginTop: "2rem" }}>
-        <Button size={"4"} onClick={() => handleCreateDeveloperCard(currentAccount!)} disabled={!currentAccount}>
+        <Button size={"4"} onClick={() => createDeveloperCard(currentAccount!)} disabled={!currentAccount}>
           Create
         </Button>
       </div>

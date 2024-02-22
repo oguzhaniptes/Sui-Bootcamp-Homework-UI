@@ -1,8 +1,8 @@
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 import { Button, TextArea } from "@radix-ui/themes";
 import { useMoveCalls } from "../Sui/DevHubCaller";
-import { useState } from "react";
-import { DEV_HUB } from "../Constant/Constant";
+import {ChangeEvent, useState} from "react";
+import { DEV_HUB } from "../utils/constant";
 
 const GetCardInfo = () => {
   const currentAccount = useCurrentAccount();
@@ -22,13 +22,13 @@ const GetCardInfo = () => {
       <div>
         <TextArea
           disabled={!currentAccount}
-          onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => setID(Number(event.target.value))}
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) => setID(Number(event.target.value))}
           placeholder="Card ID"
           size={"3"}
         ></TextArea>
       </div>
       <div style={{ marginTop: "2rem" }}>
-        <Button disabled={!id || id < 0 || !currentAccount} size={"4"} onClick={() => getCardInfo(DEV_HUB, id, currentAccount!)}>
+        <Button disabled={!id || id < 0 || !currentAccount} size={"4"} onClick={() => getCardInfo(DEV_HUB, id)}>
           Get info
         </Button>
       </div>
